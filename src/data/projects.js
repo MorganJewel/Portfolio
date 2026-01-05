@@ -53,7 +53,7 @@ By using nostalgia and gamification as a point of entry, The Billionaire Game lo
     image: "/images/educating-artists-ai.jpg",
     description: `This video is part of my ongoing work to educate artists about artificial intelligence in a moment shaped by fear, misinformation, and alarmism. I have observed a growing gap between artistic communities and the tech industry, where artists are often asked to react to new systems without being given the tools to understand how they function. In response, I use accessible language to explain what AI systems actually do, what ethical concerns are legitimate, and what fears are misplaced, emphasizing that informed understanding is a prerequisite for meaningful critique or refusal. This work is not about advocating for AI adoption, but about restoring agency to artists by clarifying what they should and should not be worried about. By treating education as a creative and ethical practice, the project positions understanding as a form of care and responsibility, allowing artists to engage with technology thoughtfully rather than through panic or reaction.`,
     mediaType: "embed",
-    media: "/projects/educate.mp4"
+    media: "https://www.youtube.com/embed/y-5gvBi1kuA"
   },
 
   {
@@ -67,7 +67,7 @@ By resisting homogenized design, the Geolocation Tool questions why seriousness 
 The project treats interface design as a site where cultural values are embedded and reinforced. Visual choices shape how users imagine power, credibility, and access, long before any data is interpreted. In this sense, the tool does not simply present information. It reveals how design conventions influence who feels authorized to engage with technology and who does not.
 Rather than striving for seamlessness or neutrality, the Geolocation Tool insists on reinserting art into the everyday technologies that structure public life. It asks why imagination has been stripped from systems that carry real consequence and what becomes possible when functionality, care, and visual expression are allowed to coexist.`,
     mediaType: "embed",
-    media: "/projects/GeoAssist.mp4"
+    media: "https://www.youtube.com/embed/blhVaq5DOw4"
   },
 
   {
@@ -76,7 +76,7 @@ Rather than striving for seamlessness or neutrality, the Geolocation Tool insist
     image: "/images/film-reel.jpg",
     description: `This film reel represents my ongoing practice as an actor working across narrative, experimental, and interdisciplinary contexts. Acting is where my relationship to art begins in the body, through breath, impulse, listening, and presence. My interest in film comes from its ability to hold intimacy, scale, and atmosphere simultaneously.`,
     mediaType: "embed",
-    media: "/projects/Film_reel.mp4"
+    media: "https://www.youtube.com/embed/lwGJwW3HPAA"
   },
 
   {
@@ -85,7 +85,7 @@ Rather than striving for seamlessness or neutrality, the Geolocation Tool insist
     image: "/images/stage-reel.jpg",
     description: `This performance reel highlights my work as a live performer and reflects my belief that the body remains one of the most powerful technologies we have. Theatre and performance are central to my practice because they operate through immediacy, risk, and shared presence.`,
     mediaType: "embed",
-    media: "/projects/Stage_reel.mp4"
+    media: "https://www.youtube.com/embed/j5PgcWy4JPE"
   },
 
   {
@@ -111,7 +111,7 @@ This interpretive layer is where the project operates conceptually. Built using 
 Like practices that repurpose bureaucratic or investigative infrastructures to examine themselves, the Rehearsal Clinic treats AI as both medium and subject. It asks what it means to formalize intuition, to systematize play, and to introduce machine interpretation into spaces that define themselves as deeply human. 
 Rather than offering efficiency or optimization, the project proposes AI as cultural infrastructure. It is a constrained and transparent system that supports artistic risk while making visible the conditions under which creative knowledge circulates. The Rehearsal Clinic ultimately asks how art might coexist with intelligent systems without surrendering authorship and why some forms of prescription are trusted in art while others provoke resistance.`,
     mediaType: "embed",
-    media: "/projects/Spolin-Database.mp4"
+    media: "https://www.youtube.com/embed/3KjwO_DGo1w"
   },
 
   {
