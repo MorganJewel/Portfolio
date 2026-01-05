@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Billionaire Ladder</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root {
+      /* Severance-inspired palette */
+      --frost:   #f0f6f7;
+      --slate:   #89aec8;
+      --brass:   #7b6727;
+      --timber:  #4e452a;
+      --marine:  #002c55;
+      --midnight:#0b0e29;
+
+      --text-main: var(--frost);
+      --text-muted:#a9c2d8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #192544 0, var(--midnight) 60%);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 1200px;
+      background: radial-gradient(circle at top left, #132036 0, #050713 60%);
+      border-radius: 24px;
+      border: 1px solid rgba(240, 246, 247, 0.06);
+      box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.95),
+        0 0 0 1px rgba(240, 246, 247, 0.04);
+      padding: 24px 26px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .title-block h1 {
+      margin: 0;
+      font-size: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .title-block p {
+      margin: 6px 0 0;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+
+    .tag {
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      border: 1px solid rgba(137, 174, 200, 0.7);
+      color: var(--slate);
+      background: radial-gradient(circle at top, rgba(137,174,200,0.18), transparent);
+    }
+
+    main {
+      margin-top: 8px;
+    }
+
+    .card {
+      position: relative;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #101522, #050713);
+      border: 1px solid rgba(240, 246, 247, 0.07);
+      padding: 18px 18px 20px;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top, rgba(137,174,200,0.22), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .card-header {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .card-subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-top: 3px;
+    }
+
+    /* Layout: CRT on left, progress bar panel on right */
+
+    .game-layout {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: stretch;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .crt-container {
+      flex: 3;
+      min-width: 0;
+    }
+
+    .progress-panel {
+      flex: 1;
+      max-width: 230px;
+      background: radial-gradient(circle at top, rgba(0,44,85,0.35), rgba(5,7,19,0.98));
+      border-radius: 16px;
+      border: 1px solid rgba(137,174,200,0.35);
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.9),
+        0 18px 40px rgba(0,0,0,0.9);
+    }
+
+    .progress-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+    }
+
+    .progress-money {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--frost);
+      margin-top: 2px;
+      text-align: center;
+    }
+
+    .progress-side-wrap {
+      margin-top: 8px;
+      flex: 1;
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #side-progress-track {
+      position: relative;
+      flex: 1;
+      width: 30px;
+      border-radius: 999px;
+      background: linear-gradient(to bottom, #050813, #060916);
+      border: 1px solid rgba(240,246,247,0.18);
+      overflow: hidden;
+      box-shadow:
+        inset 0 0 10px rgba(0,0,0,0.9),
+        0 0 14px rgba(0,44,85,0.6);
+    }
+
+    #progress-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(
+        to top,
+        var(--brass),
+        var(--slate)
+      );
+      image-rendering: pixelated;
+      box-shadow: 0 0 10px rgba(137,174,200,0.7);
+    }
+
+    .side-labels {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .side-labels span {
+      white-space: nowrap;
+    }
+
+    .side-labels span strong {
+      color: var(--frost);
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-style: italic;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* CRT frame */
+
+    .crt-frame {
+      position: relative;
+      border-radius: 18px;
+      padding: 12px;
+      background: radial-gradient(circle at top, #26364e, #040510);
+      box-shadow:
+        inset 0 0 18px rgba(0, 0, 0, 0.9),
+        0 20px 50px rgba(0, 0, 0, 0.95);
+      border: 2px solid #282f42;
+      z-index: 0;
+    }
+
+    .crt-inner {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #00040a;
+      border: 2px solid #101829;
+    }
+
+    .crt-inner::before {
+      /* scanlines */
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.08) 0,
+        rgba(255, 255, 255, 0.08) 1px,
+        rgba(0, 0, 0, 0) 3px,
+        rgba(0, 0, 0, 0) 4px
+      );
+      mix-blend-mode: soft-light;
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    #game-screen {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      max-height: 640px;
+      background-color: #000000;
+      image-rendering: pixelated;
+      overflow: hidden;
+    }
+
+    /* Tall industrial shaft */
+
+    #game-world {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 12000px;
+      background:
+        linear-gradient(to right,
+          #050713 0,
+          #050713 12%,
+          #08101f 12%,
+          #08101f 88%,
+          #050713 88%,
+          #050713 100%
+        );
+      box-shadow:
+        inset 0 6px 0 var(--marine),
+        inset 0 -6px 0 var(--marine);
+      transform: translateY(var(--camOffset, 0px));
+    }
+
+    #shaft-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(15,25,45,0.9) 0,
+          rgba(15,25,45,0.9) 16px,
+          rgba(4,8,16,1) 16px,
+          rgba(4,8,16,1) 40px
+        );
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    /* Bigger ladder */
+
+    #ladder-bg {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      width: 120px;
+      height: 100%;
+      background:
+        /* thicker rails */
+        linear-gradient(var(--slate), var(--slate)) 20px 0 / 14px 100% no-repeat,
+        linear-gradient(var(--slate), var(--slate)) calc(100% - 34px) 0 / 14px 100% no-repeat,
+        /* bigger rungs */
+        repeating-linear-gradient(
+          to bottom,
+          var(--slate) 0,
+          var(--slate) 6px,
+          transparent 6px,
+          transparent 28px
+        );
+      image-rendering: pixelated;
+      box-shadow:
+        0 0 0 3px rgba(0,0,0,0.6),
+        0 0 18px rgba(137,174,200,0.4);
+      z-index: 1;
+    }
+
+    /* Bigger player avatar */
+
+    #player {
+      position: absolute;
+      bottom: 18%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32px;
+      height: 52px;
+      background:
+        /* head */
+        linear-gradient(#f3e0c8, #f3e0c8) 8px 0 / 16px 14px no-repeat,
+        /* torso */
+        linear-gradient(var(--slate), var(--slate)) 6px 14px / 20px 18px no-repeat,
+        /* legs */
+        linear-gradient(var(--timber), var(--timber)) 6px 32px / 8px 20px no-repeat,
+        linear-gradient(var(--timber), var(--timber)) 18px 32px / 8px 20px no-repeat;
+      image-rendering: pixelated;
+      z-index: 3;
+    }
+
+    /* FX overlays inside game screen */
+
+    #fx-vignette,
+    #fx-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 2;
+    }
+
+    #fx-vignette {
+      background: radial-gradient(circle at center,
+        transparent 0,
+        transparent 45%,
+        rgba(11,14,41,0.8) 100%);
+    }
+
+    #fx-glow {
+      background:
+        radial-gradient(circle at center,
+          rgba(240,246,247,0.35) 0,
+          rgba(137,174,200,0.25) 25%,
+          rgba(0,0,0,0) 60%);
+      mix-blend-mode: screen;
+    }
+
+    @keyframes vignettePulse {
+      0%   { opacity: 0.18; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes glowPulse {
+      0%   { opacity: 0; }
+      30%  { opacity: 0.6; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes worldPulse {
+      0% {
+        transform: translateY(var(--camOffset, 0px)) scale(1);
+      }
+      50% {
+        transform: translateY(var(--camOffset, 0px)) scale(1.015);
+      }
+      100% {
+        transform: translateY(var(--camOffset, 0px)) scale(1);
+      }
+    }
+
+    #fx-vignette.active {
+      animation: vignettePulse 0.35s ease-out forwards;
+    }
+
+    #fx-glow.active {
+      animation: glowPulse 0.28s ease-out forwards;
+    }
+
+    #game-world.pulse {
+      animation: worldPulse 0.18s ease-out;
+    }
+
+    /* Overlays */
+
+    .overlay-root {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, rgba(6,9,24,0.95), rgba(1,2,8,0.98));
+      backdrop-filter: blur(2px);
+      transition: opacity 0.25s ease-out;
+      z-index: 10;
+    }
+
+    .overlay-root.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .overlay-screen {
+      max-width: 700px;
+      width: 100%;
+      background: linear-gradient(145deg, #101522, #050713);
+      border-radius: 20px;
+      border: 1px solid rgba(240, 246, 247, 0.1);
+      padding: 24px 22px 24px;
+      box-shadow:
+        0 10px 50px rgba(0, 0, 0, 0.95),
+        0 0 0 1px rgba(0,0,0,0.4);
+      display: none;
+    }
+
+    .overlay-screen.active {
+      display: block;
+      animation: fadeInUp 0.24s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .mini-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .question-text {
+      font-size: 1.35rem;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .body-text {
+      font-size: 1.02rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      line-height: 1.55;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button {
+      border-radius: 999px;
+      border: 1px solid rgba(240, 246, 247, 0.15);
+      padding: 11px 20px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: #050713;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition:
+        background 0.1s ease-out,
+        transform 0.08s ease-out,
+        box-shadow 0.12s ease-out,
+        border-color 0.1s ease-out;
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--marine), var(--timber));
+      border-color: rgba(240, 246, 247, 0.25);
+      box-shadow: 0 0 18px rgba(0, 44, 85, 0.8);
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: default;
+      box-shadow: none;
+      transform: none;
+    }
+
+    button:not(:disabled):hover {
+      background: #11182a;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+    }
+
+    button.primary:not(:disabled):hover {
+      background: linear-gradient(135deg, #02457f, #5a4c29);
+    }
+
+    .feedback {
+      margin-top: 12px;
+      font-size: 0.98rem;
+      line-height: 1.45;
+      background: rgba(0,0,0,0.45);
+      border-radius: 10px;
+      padding: 9px 11px;
+      border: 1px solid rgba(240, 246, 247, 0.08);
+      color: var(--text-muted);
+    }
+
+    .correct { color: #40d37a; font-weight: 600; }
+    .incorrect { color: #f1994c; font-weight: 600; }
+
+    ul.billion-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 12px 0 0;
+      font-size: 0.98rem;
+      max-height: 210px;
+      overflow-y: auto;
+    }
+
+    ul.billion-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 3px 0;
+      border-bottom: 1px dashed rgba(240, 246, 247, 0.08);
+    }
+
+    ul.billion-list span.name { color: var(--text-main); }
+    ul.billion-list span.amount { color: var(--text-muted); white-space: nowrap; }
+
+    .final-summary {
+      margin-top: 16px;
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    .final-summary strong { color: var(--text-main); }
+
+    @media (max-width: 900px) {
+      .game-layout {
+        flex-direction: column;
+      }
+      .progress-panel {
+        max-width: none;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .progress-side-wrap {
+        flex-direction: row;
+        width: 55%;
+        height: 140px;
+      }
+      #side-progress-track {
+        height: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <header>
+    <div class="title-block">
+      <h1>Billionaire Ladder</h1>
+      <p>A retro climb through what a billion actually feels like.</p>
+    </div>
+    <div class="tag">Training Simulation</div>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Climb the Ladder</div>
+        <div class="card-subtitle">
+          Press <strong>↑</strong> to climb. The ladder is a compressed stand in for the real distance between one million and one billion.
+        </div>
+      </div>
+
+      <div class="game-layout">
+        <div class="crt-container">
+          <div class="crt-frame">
+            <div class="crt-inner">
+              <div id="game-screen">
+                <div id="game-world">
+                  <div id="shaft-lines"></div>
+                  <div id="ladder-bg"></div>
+                </div>
+                <div id="player"></div>
+                <div id="fx-vignette"></div>
+                <div id="fx-glow"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="progress-panel">
+          <div class="progress-title">Total Wealth</div>
+          <div id="money-label" class="progress-money">$1,000,000</div>
+          <div class="progress-side-wrap">
+            <div id="side-progress-track">
+              <div id="progress-fill"></div>
+            </div>
+            <div class="side-labels">
+              <span><strong>$1M</strong></span>
+              <span><strong>$1B</strong></span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="hint">
+        Once you enter the ladder, keep pressing <strong>↑</strong> to climb.  
+        Each visible rung stands in for many tiny 100 dollar steps. If we showed them all, the climb would be thousands of screens tall.
+      </div>
+    </div>
+  </main>
+
+  <!-- Overlays -->
+  <div id="overlay-root" class="overlay-root">
+    <!-- Intro 1 -->
+    <div id="overlay-intro1" class="overlay-screen active">
+      <div class="mini-label">Step 1 · Initial Opinion</div>
+      <div class="question-text">
+        Do you think Billionaires are hoarding money?
+      </div>
+      <p class="body-text">
+        Answer honestly. This will not change the ladder itself. We will just ask again
+        after you have climbed and seen how vast a billion dollars actually is.
+      </p>
+      <div class="button-row">
+        <button id="intro-yes" class="primary">Yes</button>
+        <button id="intro-no">No</button>
+      </div>
+      <div class="button-row" style="margin-top:10px;">
+        <button id="to-intro2" class="primary" disabled>Climb the corporate ladder</button>
+      </div>
+    </div>
+
+    <!-- Intro 2 -->
+    <div id="overlay-intro2" class="overlay-screen">
+      <div class="mini-label">Step 2 · Starting Point</div>
+      <div class="question-text">
+        You are starting with $1,000,000.
+      </div>
+      <p class="body-text">
+        For most people, a million dollars already feels unreachable. In this simulation,
+        you will climb from one million toward one billion. Press <strong>↑</strong> to climb.
+      </p>
+      <p class="body-text">
+        To keep this playable, each visible step represents many 100 dollar rungs of the ladder.
+        If we showed every single one, the screen and your hands would not survive it.
+      </p>
+      <div class="button-row">
+        <button id="enter-ladder" class="primary">Enter the ladder</button>
+      </div>
+    </div>
+
+    <!-- Checkpoint Question -->
+    <div id="overlay-question" class="overlay-screen">
+      <div class="mini-label" id="checkpoint-meta"></div>
+      <div class="question-text" id="checkpoint-question"></div>
+      <div class="button-row">
+        <button id="answer-yes">Yes</button>
+        <button id="answer-no">No</button>
+      </div>
+      <div id="checkpoint-feedback" class="feedback" style="display:none;"></div>
+      <div class="button-row">
+        <button id="checkpoint-continue" class="primary" disabled>Continue climbing</button>
+      </div>
+    </div>
+
+    <!-- Billion Screen: Facts + List -->
+    <div id="overlay-billion" class="overlay-screen">
+      <div class="mini-label">Step 3 · You Reach $1,000,000,000</div>
+      <div class="question-text">
+        You have made it to $1 billion.
+      </div>
+      <p class="body-text">
+        There is a vast difference between 1 billion and 1 million. Not just that, but most of the billionaires in our country do not have just $1 billion.
+      </p>
+      <p class="body-text">
+        <strong>Top 20 US Billionaires</strong> (There are estimated to be around 850 Billionaires in the US alone)
+      </p>
+      <ul class="billion-list">
+        <li><span class="name">Elon Musk</span><span class="amount">$384 Billion</span></li>
+        <li><span class="name">Larry Ellison</span><span class="amount">$349 Billion</span></li>
+        <li><span class="name">Mark Zuckerberg</span><span class="amount">$265 Billion</span></li>
+        <li><span class="name">Jeff Bezos</span><span class="amount">$250 Billion</span></li>
+        <li><span class="name">Larry Page</span><span class="amount">$211 Billion</span></li>
+        <li><span class="name">Sergey Brin</span><span class="amount">$198 Billion</span></li>
+        <li><span class="name">Steve Ballmer</span><span class="amount">$175 Billion</span></li>
+        <li><span class="name">Jensen Huang</span><span class="amount">$154 Billion</span></li>
+        <li><span class="name">Michael Dell</span><span class="amount">$146 Billion</span></li>
+        <li><span class="name">Warren Buffett</span><span class="amount">$148 Billion</span></li>
+        <li><span class="name">Jim Walton</span><span class="amount">$128 Billion</span></li>
+        <li><span class="name">Alice Walton</span><span class="amount">$125 Billion</span></li>
+        <li><span class="name">Bill Gates</span><span class="amount">$121 Billion</span></li>
+        <li><span class="name">Julia Koch &amp; Family</span><span class="amount">$80 Billion</span></li>
+        <li><span class="name">Thomas Peterffy</span><span class="amount">$76 Billion</span></li>
+        <li><span class="name">Charles Koch</span><span class="amount">$73 Billion</span></li>
+        <li><span class="name">Jeff Yass</span><span class="amount">$62 Billion</span></li>
+        <li><span class="name">Stephen Schwarzman</span><span class="amount">$59 Billion</span></li>
+        <li><span class="name">Jacqueline Mars</span><span class="amount">$48 Billion</span></li>
+        <li><span class="name">John Mars</span><span class="amount">$48 Billion</span></li>
+      </ul>
+
+      <div class="button-row">
+        <button id="to-explain" class="primary">Continue</button>
+      </div>
+    </div>
+
+    <!-- Billion Explanation Screen -->
+    <div id="overlay-billion-explain" class="overlay-screen">
+      <div class="mini-label">Step 3 · The Reality of One Billion Dollars</div>
+      <div class="question-text">
+        The Reality of One Billion Dollars
+      </div>
+
+      <p class="body-text">
+        The idea of this is to help people, who cannot physically understand what a $1 billion actually looks like. Many people in the upper middle class do not understand what it actually is. They believe when we say we need to eat the rich we are talking about them. We are not.
+      </p>
+
+      <p class="body-text">
+        We are talking about the money hoarders who could give away their money to improve the country but they are not. Instead we take away food stamps and Medicare so that we do not have to tax these grossly rich people, with more money than they could ever need in their lives.
+      </p>
+
+      <p class="body-text">
+        It is estimated that it would take about $25 to $35 billion to solve the hunger crisis in America, and it is estimated that it would take around $20 billion to solve the housing crisis. Given this information, it is clear that these crises are intentional policy choices.
+      </p>
+
+      <p class="body-text">
+        The question is no longer whether or not you think Billionaires are hoarding money, it is whether or not we care enough to do something about it.
+      </p>
+
+      <p class="body-text"><strong>So I will ask the question again.</strong></p>
+
+      <div class="button-row">
+        <button id="to-final" class="primary">Final question</button>
+      </div>
+    </div>
+
+    <!-- Final Question -->
+    <div id="overlay-final" class="overlay-screen">
+      <div class="mini-label">Step 4 · After the Climb</div>
+      <div class="question-text">
+        Thank you for playing, one last question before you go.<br><br>
+        Do you think Billionaires are hoarding money? Yes or No
+      </div>
+      <div class="button-row">
+        <button id="final-yes" class="primary">Yes</button>
+        <button id="final-no">No</button>
+      </div>
+      <div id="final-summary" class="final-summary" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const BILLION = 1_000_000_000;
+  const STEP_VALUE = 100_000; // each press = compressed 100 dollar steps
+
+  let money = 1_000_000;
+  let walkingEnabled = false;
+  let gameState = "intro";
+
+  let startingOpinion = null;
+  let finalOpinion = null;
+
+  const checkpoints = [
+    {
+      amount: 10_000_000,
+      question: "If you made $100,000 a year, could you reach a billion dollars before you died?",
+      correct: "no",
+      explanation: "No, it would take 10,000 years."
+    },
+    {
+      amount: 50_000_000,
+      question: "If you made $1 million a year could you reach a billion before you died?",
+      correct: "no",
+      explanation: "No, it would take 1,000 years."
+    },
+    {
+      amount: 100_000_000,
+      question: "If you made $5 million every year, could you become a billionaire before you died?",
+      correct: "no",
+      explanation: "No, it would take 200 years."
+    },
+    {
+      amount: 150_000_000,
+      question: "If you spent $1,000 every single day, would you spend a billion dollars before you died?",
+      correct: "no",
+      explanation: "No, it would take you about 3 thousand years."
+    },
+    {
+      amount: 200_000_000,
+      question: "If you spent $10,000 a day, could you burn through a billon before you died?",
+      correct: "no",
+      explanation: "No, it would take about 300 years."
+    },
+    {
+      amount: 300_000_000,
+      question: "If you owned ten $10 million mansions would that make you a billionaire?",
+      correct: "no",
+      explanation: "No."
+    },
+    {
+      amount: 400_000_000,
+      question: "If you stacked $1 bills until you hit a billion, would it fit in your house?",
+      correct: "no",
+      explanation: "No, the stack would be 68 miles high."
+    },
+    {
+      amount: 500_000_000,
+      question: "If you bought a $500,000 house every month, would you be able to spend a billion dollars in your lifetime?",
+      correct: "no",
+      explanation: "No it would take 166 years."
+    },
+    {
+      amount: 600_000_000,
+      question: "If you spent $100,000 every day, since the day Columbus sailed would you have spent a billion dollars by now?",
+      correct: "no",
+      explanation: "No."
+    },
+    {
+      amount: 750_000_000,
+      question: "If you worked 24 hours a day for $100 an hour, could you ever earn a billion in your lifetime?",
+      correct: "no",
+      explanation: "No, it would take more than 1,000 years of non-stop work."
+    },
+    {
+      amount: 900_000_000,
+      question: "If you spent $100,000 every day, since the day Jesus was born, would you have spent a billion dollars by now?",
+      correct: "no",
+      explanation: "No."
+    },
+    {
+      amount: 950_000_000,
+      question: "If you earned $100,000 every day since the invention of writing would you have a billion?",
+      correct: "no",
+      explanation: "No, you would still fall short after 5,000 years."
+    }
+  ];
+
+  let currentCheckpointIndex = 0;
+
+  const moneyLabel = document.getElementById("money-label");
+  const progressFill = document.getElementById("progress-fill");
+  const gameWorld = document.getElementById("game-world");
+  const gameScreen = document.getElementById("game-screen");
+  const fxVignette = document.getElementById("fx-vignette");
+  const fxGlow = document.getElementById("fx-glow");
+
+  const overlayRoot = document.getElementById("overlay-root");
+  const overlayScreens = {
+    intro1:   document.getElementById("overlay-intro1"),
+    intro2:   document.getElementById("overlay-intro2"),
+    question: document.getElementById("overlay-question"),
+    billion:  document.getElementById("overlay-billion"),
+    billionExplain: document.getElementById("overlay-billion-explain"),
+    final:    document.getElementById("overlay-final")
+  };
+
+  const checkpointMeta = document.getElementById("checkpoint-meta");
+  const checkpointQuestion = document.getElementById("checkpoint-question");
+  const checkpointFeedback = document.getElementById("checkpoint-feedback");
+  const checkpointContinue = document.getElementById("checkpoint-continue");
+  const answerYesBtn = document.getElementById("answer-yes");
+  const answerNoBtn = document.getElementById("answer-no");
+  const finalSummary = document.getElementById("final-summary");
+
+  const introYesBtn = document.getElementById("intro-yes");
+  const introNoBtn = document.getElementById("intro-no");
+  const toIntro2Btn = document.getElementById("to-intro2");
+  const enterLadderBtn = document.getElementById("enter-ladder");
+  const toExplainBtn = document.getElementById("to-explain");
+  const toFinalBtn = document.getElementById("to-final");
+  const finalYesBtn = document.getElementById("final-yes");
+  const finalNoBtn = document.getElementById("final-no");
+
+  const WORLD_HEIGHT = 12000;
+
+  /* AUDIO (Web Audio: Atari style + rhythmic click loop) */
+
+  let audioCtx = null;
+  let masterGain = null;
+  let ambientIntervalId = null;
+
+  function ensureAudioContext() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.5;
+      masterGain.connect(audioCtx.destination);
+    }
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume();
+    }
+  }
+
+  function playBeep(options) {
+    const {
+      freq = 440,
+      type = "square",
+      duration = 0.08,
+      gain = 0.25,
+      detune = 0
+    } = options || {};
+    if (!audioCtx || !masterGain) return;
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    osc.detune.value = detune;
+    g.gain.value = gain;
+
+    osc.connect(g);
+    g.connect(masterGain);
+
+    const now = audioCtx.currentTime;
+    g.gain.setValueAtTime(gain, now);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+    osc.start(now);
+    osc.stop(now + duration + 0.02);
+  }
+
+  function playNoiseHit(options) {
+    const {
+      duration = 0.15,
+      gain = 0.3,
+      lowpass = 2000
+    } = options || {};
+    if (!audioCtx || !masterGain) return;
+
+    const bufferSize = audioCtx.sampleRate * duration;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * 0.6;
+    }
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = lowpass;
+
+    const g = audioCtx.createGain();
+    g.gain.value = gain;
+
+    noise.connect(filter);
+    filter.connect(g);
+    g.connect(masterGain);
+
+    const now = audioCtx.currentTime;
+    g.gain.setValueAtTime(gain, now);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+    noise.start(now);
+    noise.stop(now + duration + 0.02);
+  }
+
+  // Rhythmic click loop
+  function startAmbientLoop() {
+    if (!audioCtx || !masterGain) return;
+    if (ambientIntervalId) return;
+
+    function scheduleClick() {
+      const delay = 700 + Math.random() * 900;
+      ambientIntervalId = setTimeout(() => {
+        if (!audioCtx) return;
+        playBeep({
+          freq: 260 + Math.random() * 40,
+          duration: 0.05,
+          gain: 0.09,
+          type: "square",
+          detune: (Math.random() - 0.5) * 40
+        });
+        if (Math.random() < 0.3) {
+          playNoiseHit({ duration: 0.04, gain: 0.05, lowpass: 2500 });
+        }
+        scheduleClick();
+      }, delay);
+    }
+
+    scheduleClick();
+  }
+
+  function playClimbTick() {
+    playBeep({ freq: 110 + Math.random() * 40, duration: 0.04, gain: 0.16, type: "square" });
+  }
+
+  function playCheckpointClank() {
+    playNoiseHit({ duration: 0.18, gain: 0.32, lowpass: 1500 });
+    playBeep({ freq: 220, duration: 0.14, gain: 0.2, type: "square" });
+  }
+
+  function playScreenWhoom() {
+    playNoiseHit({ duration: 0.35, gain: 0.3, lowpass: 600 });
+  }
+
+  function playAnswerYes() {
+    playBeep({ freq: 540, duration: 0.09, gain: 0.22, type: "square" });
+  }
+
+  function playAnswerNo() {
+    playBeep({ freq: 360, duration: 0.12, gain: 0.22, type: "square", detune: -20 });
+  }
+
+  function playBillionChime() {
+    playBeep({ freq: 660, duration: 0.18, gain: 0.25, type: "square" });
+    setTimeout(() => {
+      playBeep({ freq: 440, duration: 0.2, gain: 0.2, type: "square" });
+    }, 120);
+  }
+
+  function playFinalReveal() {
+    playBeep({ freq: 300, duration: 0.25, gain: 0.22, type: "square" });
+  }
+
+  /* FX: vignette + glow + micro pulse */
+
+  function triggerCheckpointFX() {
+    if (!fxVignette || !fxGlow) return;
+
+    // reset animations so they can replay
+    fxVignette.classList.remove("active");
+    fxGlow.classList.remove("active");
+    gameWorld.classList.remove("pulse");
+
+    // force reflow
+    void fxVignette.offsetWidth;
+
+    fxVignette.classList.add("active");
+    fxGlow.classList.add("active");
+    gameWorld.classList.add("pulse");
+  }
+
+  /* CAMERA + MONEY UI */
+
+  function formatMoney(n) {
+    return "$" + n.toLocaleString("en-US", { maximumFractionDigits: 0 });
+  }
+
+  function updateCamera() {
+    const rect = gameScreen.getBoundingClientRect();
+    const viewHeight = rect.height || 400;
+
+    const clampedMoney = Math.min(BILLION, Math.max(1_000_000, money));
+    const progress = (clampedMoney - 1_000_000) / (BILLION - 1_000_000);
+
+    const maxOffset = WORLD_HEIGHT - viewHeight;
+
+    // progress 0 -> bottom, progress 1 -> top
+    const offset = maxOffset * (1 - progress);
+    gameWorld.style.setProperty("--camOffset", (-offset) + "px");
+  }
+
+  function updateMoneyUI() {
+    moneyLabel.textContent = formatMoney(money);
+    const percent = Math.min(100, (money / BILLION) * 100);
+    progressFill.style.height = percent + "%";
+    updateCamera();
+  }
+
+  function showOverlay(idOrNone) {
+    if (idOrNone === "none") {
+      overlayRoot.classList.add("hidden");
+      Object.values(overlayScreens).forEach(s => s.classList.remove("active"));
+      return;
+    }
+    Object.values(overlayScreens).forEach(s => s.classList.remove("active"));
+    overlayScreens[idOrNone].classList.add("active");
+    overlayRoot.classList.remove("hidden");
+  }
+
+  /* CLIMBING */
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+    }
+    if (e.key === "ArrowUp" || e.key === " " || e.key === "Enter") {
+      ensureAudioContext();
+    }
+    if (gameState !== "climb") return;
+    if (!walkingEnabled) return;
+    if (e.key !== "ArrowUp") return;
+
+    money += STEP_VALUE;
+    if (money > BILLION) money = BILLION;
+
+    playClimbTick();
+    updateMoneyUI();
+    checkForCheckpointOrFinish();
+  });
+
+  function checkForCheckpointOrFinish() {
+    if (currentCheckpointIndex < checkpoints.length) {
+      const cp = checkpoints[currentCheckpointIndex];
+      if (money >= cp.amount) {
+        triggerCheckpoint(cp);
+        return;
+      }
+    }
+    if (money >= BILLION) {
+      walkingEnabled = false;
+      updateMoneyUI();
+      gameState = "billion";
+      triggerCheckpointFX();
+      playBillionChime();
+      showOverlay("billion");
+    }
+  }
+
+  function triggerCheckpoint(cp) {
+    walkingEnabled = false;
+    gameState = "checkpoint";
+
+    checkpointFeedback.style.display = "none";
+    checkpointFeedback.innerHTML = "";
+    checkpointContinue.disabled = true;
+
+    checkpointMeta.textContent =
+      "Platform " + (currentCheckpointIndex + 1) + " of " + checkpoints.length;
+    checkpointQuestion.textContent = cp.question;
+
+    triggerCheckpointFX();
+    playCheckpointClank();
+
+    function answer(userAnswer) {
+      const correct = userAnswer === cp.correct;
+      checkpointFeedback.style.display = "block";
+      checkpointFeedback.innerHTML =
+        "You answered <strong>" + userAnswer.toUpperCase() + "</strong>. " +
+        (correct
+          ? '<span class="correct">That matches the written answer.</span><br>'
+          : '<span class="incorrect">That does not match the written answer.</span><br>') +
+        cp.explanation;
+
+      checkpointContinue.disabled = false;
+      answerYesBtn.onclick = null;
+      answerNoBtn.onclick = null;
+    }
+
+    answerYesBtn.onclick = () => {
+      ensureAudioContext();
+      playAnswerYes();
+      answer("yes");
+    };
+    answerNoBtn.onclick = () => {
+      ensureAudioContext();
+      playAnswerNo();
+      answer("no");
+    };
+
+    checkpointContinue.onclick = () => {
+      ensureAudioContext();
+      playScreenWhoom();
+      currentCheckpointIndex++;
+      walkingEnabled = true;
+      gameState = "climb";
+      showOverlay("none");
+    };
+
+    showOverlay("question");
+  }
+
+  /* INTRO + FINAL */
+
+  introYesBtn.onclick = () => {
+    ensureAudioContext();
+    playAnswerYes();
+    startingOpinion = "yes";
+    toIntro2Btn.disabled = false;
+  };
+
+  introNoBtn.onclick = () => {
+    ensureAudioContext();
+    playAnswerNo();
+    startingOpinion = "no";
+    toIntro2Btn.disabled = false;
+  };
+
+  toIntro2Btn.onclick = () => {
+    ensureAudioContext();
+    playScreenWhoom();
+    showOverlay("intro2");
+  };
+
+  enterLadderBtn.onclick = () => {
+    ensureAudioContext();
+    playScreenWhoom();
+    startAmbientLoop();
+    gameState = "climb";
+    walkingEnabled = true;
+    showOverlay("none");
+  };
+
+  toExplainBtn.onclick = () => {
+    ensureAudioContext();
+    playScreenWhoom();
+    showOverlay("billionExplain");
+  };
+
+  toFinalBtn.onclick = () => {
+    ensureAudioContext();
+    playScreenWhoom();
+    gameState = "final";
+    showOverlay("final");
+  };
+
+  function finishGame(answer) {
+    ensureAudioContext();
+    playFinalReveal();
+    finalOpinion = answer;
+
+    finalSummary.style.display = "block";
+    finalSummary.innerHTML =
+      "Thank you for playing.<br><br>" +
+      "The question is no longer whether or not you think Billionaires are hoarding money, " +
+      "it is whether or not we care enough to do something about it.";
+  }
+
+  finalYesBtn.onclick = () => finishGame("yes");
+  finalNoBtn.onclick = () => finishGame("no");
+
+  /* INIT */
+
+  updateMoneyUI();
+  showOverlay("intro1");
+})();
+</script>
+</body>
+</html>
