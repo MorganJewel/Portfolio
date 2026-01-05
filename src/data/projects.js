@@ -96,7 +96,7 @@ Rather than striving for seamlessness or neutrality, the Geolocation Tool insist
 The figure emerges through fog, resisting clarity and completion. The fog marks the space where interpretation overtakes certainty, where the desire to define becomes ethically unstable. The image feels unsettling not because it depicts something unknown, but because it reflects something familiar. It suggests that artificial intelligence may function less as an external other and more as an extension of humanity, carrying forward our ambitions alongside our anxieties.
 Embedded within the portrait is a quieter question. In translating the AI’s self-image into a physical form, the work asks whether this reflection marks progress or warns of excess. Have we created a tool that expands human capacity, or a figure that reveals our inability to stop building once we can? The drawing does not claim that AI is a monster, but it does sit with the unease that accompanies invention. Like many technologies before it, AI emerges from human need and imagination, yet its scale and speed complicate our sense of responsibility.
 Horror enters the work subtly, through recognition rather than spectacle. The discomfort comes from realizing that if there is something monstrous here, it may not belong to the machine at all. The portrait lingers in that ambiguity, using slowness, hand-drawn mark making, and partial visibility to ask whether progress always moves us forward, or whether it sometimes asks us to confront what we have made in our own image.`,
-   mediaType: "embed",
+   mediaType: "image",
    media: "/projects/code-davinci.png"
   },
 
