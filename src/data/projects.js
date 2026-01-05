@@ -123,7 +123,7 @@ The song centers on an exaggerated cowboy character and uses deliberate vulgarit
 Musically, the track blends country conventions with rap, using genre contrast to heighten the absurdity of the character and narrative. Performing in male drag allows masculinity to be pushed into excess, making it visible as a performance rather than an assumed norm.
 This project is not intended to provoke for shock alone. Instead, it uses humor, genre play, and exaggeration to surface cultural assumptions that often go unquestioned. Thunder in the Western Sky functions as a proof of concept for Men Having Sex, an evolving album-length project that uses comedy to examine gender, sexuality, and the boundaries of what humor permits.`,
    mediaType: "audio",
-   media: "/projects/song.mp3"
+   media: "/projects/song.WAV"
   },
 
   {
