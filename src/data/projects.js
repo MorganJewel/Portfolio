@@ -97,7 +97,7 @@ The figure emerges through fog, resisting clarity and completion. The fog marks 
 Embedded within the portrait is a quieter question. In translating the AI’s self-image into a physical form, the work asks whether this reflection marks progress or warns of excess. Have we created a tool that expands human capacity, or a figure that reveals our inability to stop building once we can? The drawing does not claim that AI is a monster, but it does sit with the unease that accompanies invention. Like many technologies before it, AI emerges from human need and imagination, yet its scale and speed complicate our sense of responsibility.
 Horror enters the work subtly, through recognition rather than spectacle. The discomfort comes from realizing that if there is something monstrous here, it may not belong to the machine at all. The portrait lingers in that ambiguity, using slowness, hand-drawn mark making, and partial visibility to ask whether progress always moves us forward, or whether it sometimes asks us to confront what we have made in our own image.`,
    mediaType: "image",
-   media: "/projects/code-davinci.png"
+   media: "/projects/code-davinci.jpg"
   },
 
   {
