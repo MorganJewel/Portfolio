@@ -5,7 +5,7 @@ export const projects = [
     image: "/images/about.jpg",
     description: "Morgan is a queer interdisciplinary theatre artist and technologist interested in what happens when bodies, data, and systems collide. Her work lives between performance and computation, using digital tools, interactive media, and storytelling to examine power, memory, and collective responsibility.She is drawn to processes that are collaborative, experimental, and slightly uncomfortable, and spaces where precision meets vulnerability. Whether she's directing, writing, or building digital projects, they treat technology as a partner in performance rather than a backdrop, asking how it shapes the way we see, remember, and respond to one another. Again and again, her work returns to questions of care, and how it’s practiced, withheld, automated, or shared. They are less interested in clean answers than in creating experiences that linger, and projects that ask audiences to slow down, participate, and reckon with their own position inside the system.",
    mediaType: "image",
-   media: "/projects/unnamed.jpg"
+   media: "/projects/unnamed.png"
   },
 
   {
@@ -97,7 +97,7 @@ The figure emerges through fog, resisting clarity and completion. The fog marks 
 Embedded within the portrait is a quieter question. In translating the AI’s self-image into a physical form, the work asks whether this reflection marks progress or warns of excess. Have we created a tool that expands human capacity, or a figure that reveals our inability to stop building once we can? The drawing does not claim that AI is a monster, but it does sit with the unease that accompanies invention. Like many technologies before it, AI emerges from human need and imagination, yet its scale and speed complicate our sense of responsibility.
 Horror enters the work subtly, through recognition rather than spectacle. The discomfort comes from realizing that if there is something monstrous here, it may not belong to the machine at all. The portrait lingers in that ambiguity, using slowness, hand-drawn mark making, and partial visibility to ask whether progress always moves us forward, or whether it sometimes asks us to confront what we have made in our own image.`,
    mediaType: "image",
-   media: "/projects/code-davinci.jpg"
+   media: "/projects/code-davinci.png"
   },
 
   {
@@ -122,7 +122,7 @@ Rather than offering efficiency or optimization, the project proposes AI as cult
 The song centers on an exaggerated cowboy character and uses deliberate vulgarity and absurd humor to examine cultural ideas around masculinity and sexuality. One of the core questions behind the piece is what is considered “acceptable” to laugh at. In particular, we were interested in how male masturbation is often framed as harmless or comedic, while comparable representations of female pleasure are frequently labeled crude or inappropriate. That imbalance is embedded into the structure and tone of the song itself.
 Musically, the track blends country conventions with rap, using genre contrast to heighten the absurdity of the character and narrative. Performing in male drag allows masculinity to be pushed into excess, making it visible as a performance rather than an assumed norm.
 This project is not intended to provoke for shock alone. Instead, it uses humor, genre play, and exaggeration to surface cultural assumptions that often go unquestioned. Thunder in the Western Sky functions as a proof of concept for Men Having Sex, an evolving album-length project that uses comedy to examine gender, sexuality, and the boundaries of what humor permits.`,
-   mediaType: "embed",
+   mediaType: "audio",
    media: "/projects/song.mp3"
   },
 
