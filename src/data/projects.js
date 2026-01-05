@@ -43,7 +43,7 @@ By using nostalgia and gamification as a point of entry, The Billionaire Game lo
     title: "Theatre Manifesto",
     image: "/images/theatre-manifesto.jpg",
     description: `This manifesto articulates the ethical and theoretical foundation of my artistic practice and my refusal to make work that protects comfort in a moment shaped by denial. Drawing from directing theory, neuroscience, and cultural critique, the text argues that contemporary American culture relies on distance, ignorance, and aesthetic reassurance to sustain violence, and that art which comforts its audience becomes complicit in that system. I position horror as a necessary theatrical language because it engages the nervous system before rationalization can intervene, forcing audiences to confront what they are trained to ignore. The manifesto defines effective theatre not by polish or taste, but by its ability to disrupt denial through embodiment, structure, and collective experience. It functions as a guiding framework across my work, informing how I approach rehearsal, collaboration, technology, and form.`,
-    mediaType:"embed",
+    mediaType:"audio",
     media: "/projects/Manifesto.pdf"
   },
 
