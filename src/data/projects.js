@@ -43,7 +43,7 @@ By using nostalgia and gamification as a point of entry, The Billionaire Game lo
     title: "Theatre Manifesto",
     image: "/images/theatre-manifesto.jpg",
     description: `This manifesto articulates the ethical and theoretical foundation of my artistic practice and my refusal to make work that protects comfort in a moment shaped by denial. Drawing from directing theory, neuroscience, and cultural critique, the text argues that contemporary American culture relies on distance, ignorance, and aesthetic reassurance to sustain violence, and that art which comforts its audience becomes complicit in that system. I position horror as a necessary theatrical language because it engages the nervous system before rationalization can intervene, forcing audiences to confront what they are trained to ignore. The manifesto defines effective theatre not by polish or taste, but by its ability to disrupt denial through embodiment, structure, and collective experience. It functions as a guiding framework across my work, informing how I approach rehearsal, collaboration, technology, and form.`,
-    mediaType:"audio",
+    mediaType:"embed",
     media: "/projects/Manifesto.pdf"
   },
 
@@ -122,7 +122,7 @@ Rather than offering efficiency or optimization, the project proposes AI as cult
 The song centers on an exaggerated cowboy character and uses deliberate vulgarity and absurd humor to examine cultural ideas around masculinity and sexuality. One of the core questions behind the piece is what is considered “acceptable” to laugh at. In particular, we were interested in how male masturbation is often framed as harmless or comedic, while comparable representations of female pleasure are frequently labeled crude or inappropriate. That imbalance is embedded into the structure and tone of the song itself.
 Musically, the track blends country conventions with rap, using genre contrast to heighten the absurdity of the character and narrative. Performing in male drag allows masculinity to be pushed into excess, making it visible as a performance rather than an assumed norm.
 This project is not intended to provoke for shock alone. Instead, it uses humor, genre play, and exaggeration to surface cultural assumptions that often go unquestioned. Thunder in the Western Sky functions as a proof of concept for Men Having Sex, an evolving album-length project that uses comedy to examine gender, sexuality, and the boundaries of what humor permits.`,
-   mediaType: "embed",
+   mediaType: "audio",
    media: "/projects/song.mp3"
   },
 
