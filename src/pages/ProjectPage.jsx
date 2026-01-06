@@ -28,15 +28,8 @@ export default function ProjectPage() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        padding: "3rem",
-        color: "white",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className="page-container">
+
       {/* Back */}
       <button
         onClick={() => navigate(-1)}
