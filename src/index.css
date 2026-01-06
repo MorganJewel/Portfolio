@@ -1,12 +1,14 @@
 /* ===============================
-   Global Defaults (SAFE)
+   GLOBAL ROOT + BACKGROUND FIX
    =============================== */
 
 html,
-body {
+body,
+#root {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  width: 100%;
 
   background-color: #242424;
   color: rgba(255, 255, 255, 0.87);
@@ -21,25 +23,43 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Tell browser this site is dark-first */
+/* Tell browser: this is a dark-first site */
 :root {
   color-scheme: dark;
 }
 
 /* ===============================
-   Optional Light Mode (SAFE)
+   OPTIONAL LIGHT MODE (SAFE)
    =============================== */
 
 @media (prefers-color-scheme: light) {
   html,
-  body {
+  body,
+  #root {
     background-color: #ffffff;
     color: #213547;
   }
 }
 
 /* ===============================
-   Links
+   LAYOUT
+   =============================== */
+
+body {
+  display: flex;
+  min-width: 320px;
+}
+
+/* Container replacing inline JSX styles */
+.page-container {
+  min-height: 100vh;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===============================
+   LINKS
    =============================== */
 
 a {
@@ -53,17 +73,7 @@ a:hover {
 }
 
 /* ===============================
-   Layout
-   =============================== */
-
-body {
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-}
-
-/* ===============================
-   Headings
+   HEADINGS
    =============================== */
 
 h1 {
@@ -72,7 +82,7 @@ h1 {
 }
 
 /* ===============================
-   Buttons
+   BUTTONS
    =============================== */
 
 button {
@@ -101,7 +111,7 @@ button:focus-visible {
 }
 
 /* ===============================
-   Decrypted Text (React Bits)
+   DECRYPTED TEXT (REACT BITS)
    =============================== */
 
 .decrypted-wrapper {
